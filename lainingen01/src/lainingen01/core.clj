@@ -1,6 +1,35 @@
 (ns lainingen01.core)
 
 
+
+
+(defn uradi-dec [input1, brojRedova]	
+	(loop [x brojRedova]
+	     (if (neg? x)
+	     x
+	     (do 
+	       (println (.concat input1 (.toString x)))
+	       (recur (dec x))))))
+
+(defn uradi-inc [input1, brojRedova]	
+  (loop [x 0]
+    (if (= x brojRedova)
+      x
+	    (do 
+       (spit "blubber.txt" 
+             (.concat input1 (.concat (.toString x) "\n")) 
+             :append true)
+	     (recur (inc x))))))
+
+
+(uradi-inc "hhh" 23)
+
+
+(spit "blubber.txt" "11111test\n" :append true)
+(slurp "blubber.txt")
+(println (slurp "blubber.txt"))
+
+
 (print-all-things '(test-string test-string2))
 (count '(test-string test-string2))
 
