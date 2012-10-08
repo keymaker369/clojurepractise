@@ -17,7 +17,7 @@
       x
 	    (do 
        (spit "blubber.txt" 
-             (.concat input1 (.concat (.toString x) "\n")) 
+             (str input1 x "\n") 
              :append true)
 	     (recur (inc x))))))
 
