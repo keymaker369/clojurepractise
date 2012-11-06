@@ -12,17 +12,17 @@
 	       (recur (dec x))))))
 
 (defn uradi-inc [input1, brojRedova]	
-  (loop [x 0]
+  (loop [x 2]
     (if (= x brojRedova)
-      x
+      nil
 	    (do 
-       (spit "blubber.txt" 
+       (spit "/home/user/workspace/filmania/src/ets/dataset.csv" 
              (str input1 x "\n") 
              :append true)
 	     (recur (inc x))))))
 
 
-(uradi-inc "hhh" 23)
+(uradi-inc "" 99)
 
 
 (spit "blubber.txt" "11111test\n" :append true)
