@@ -18,4 +18,3 @@
 
 (kamata-na-kamatu 60000.0 5 14)
 
-razlomak
