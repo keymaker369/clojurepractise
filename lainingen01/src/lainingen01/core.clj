@@ -16,13 +16,13 @@
     (if (= x brojRedova)
       nil
 	    (do 
-       (spit "/home/user/workspace/filmania/src/ets/dataset.csv" 
+       (spit "C:\\Users\\nikola\\workspace\\filmania\\src\\ets\\dataset.csv" 
              (str input1 x "\n") 
              :append true)
 	     (recur (inc x))))))
 
 
-(uradi-inc "" 99)
+(uradi-inc "" 1100)
 
 
 (spit "blubber.txt" "11111test\n" :append true)
