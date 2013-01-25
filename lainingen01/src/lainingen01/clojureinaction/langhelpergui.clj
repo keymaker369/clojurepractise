@@ -21,6 +21,9 @@
        amount
 	     (conj picked-elements odabran))))))
 
+(defn add-to-map-ref [map-ref key val]
+  (dosync (ref-set odabran (assoc @map-ref key val))))
+
 (def f (frame :title "Language helpersss"  :size [400 :by 400] 
               :content (canvas :id :canvas :background "#BBBBBB")))
 (defn display [content]
@@ -41,10 +44,19 @@
            :south result
            :vgap 5 :hgap 5 :border 5))
 
-(-> f pack! show!)
-(def src {:1 1111 :22 2222 :3 3333 :4 4444 :5 5555 :6 6666})
-(def not-used (ref {:1 1111 :22 2222 :3 3333 :4 4444 :5 5555 :6 6666}))
+(def src {"1" "1111" "22" "2222" "3" "3333" "4" "4444" "5" "5555" "6" "6666"})
+(def not-used (ref src))
+(def odabran (ref {}))
 (def used (ref {}))
+
+(do
+  (-> f pack! show!)
+  (let [five-keys (pick-random-amount (keys @not-used) 5)
+        random-key (select-random five-keys)]
+    (config! word :text random-key)
+    (add-to-map-ref odabran random-key (src random-key))))
+  
+(config! word :text (select-random (pick-random-amount (keys @not-used) 5)))
 
 (listen b1 :action (fn [e] (println (.getText (.getSource e)))))
 (listen b2 :action (fn [e] (println (.getText (.getSource e)))))
@@ -52,10 +64,13 @@
 (listen b4 :action (fn [e] (println (.getText (.getSource e)))))
 (listen b5 :action (fn [e] (println (.getText (.getSource e)))))
 
+(do
+  (config! result :text (src (first (keys @odabran))))
 
-	      
-  
-  
+
+
+(add-to-map-ref odabran :2 1111)
+
 (pick-random-amount (keys src) 3)
 (remove #{:1} (keys src))
 (defn ddd [a & more] (println))
@@ -83,3 +98,4 @@
 ;(def mapa {:11 22 :333 444})
 
 ;(get mapa :11) 
+
