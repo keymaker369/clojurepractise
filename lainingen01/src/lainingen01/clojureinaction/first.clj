@@ -178,7 +178,7 @@
  
 ; Also note that (listen) returned a function. Calling this function will
 ; undo the effects of the (listen) call, i.e. unregister the listener
-(*1)
+;(*1)
 ;=> [...]
  
 ; Now clicking does nothing again.
