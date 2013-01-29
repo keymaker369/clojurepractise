@@ -1,7 +1,8 @@
 (ns lainingen01.core
   (:gen-class :main true)
   (:use seesaw.core)
-  (:use seesaw.border))
+  (:use seesaw.border)
+  (:use seesaw.chooser))
 
 (require 'clojure.java.io)
 (defn load-props
@@ -20,6 +21,9 @@
 ;gui
 (def f (frame :title "Language helpersss"  :size [400 :by 400] 
               :content (canvas :id :canvas :background "#BBBBBB")))
+(def open-menu-item (menu-item :text "Open"))
+(def file-menu (menu :text "File" :items (list open-menu-item)))
+(def menu-bar (menubar :items (list file-menu)))
 (def word (text :multi-line? false :font "MONOSPACED-PLAIN-14" :text "guessing text"))
 (def result (text :multi-line? true :font "MONOSPACED-PLAIN-14" :text "result"))
 (def b1 (button :text "Click Me1"))
@@ -32,7 +36,8 @@
   (content)
   content)
 	                             
-(config! f :content (border-panel
+(config! f :menubar menu-bar 
+           :content (border-panel
            :north word
            :center (vertical-panel :items (list b1 b2 b3 b4 b5))
            :south result
@@ -103,15 +108,23 @@
 (listen b2 :action (fn [e] (uradi (.getText (.getSource e)))))
 (listen b3 :action (fn [e] (uradi (.getText (.getSource e)))))
 (listen b4 :action (fn [e] (uradi (.getText (.getSource e)))))
-(listen b5 :action (fn [e] (uradi (.getText (.getSource e))))) 
+(listen b5 :action (fn [e] (uradi (.getText (.getSource e)))))
+(listen open-menu-item :action (fn [e] (println (choose-file :success-fn (fn [fc file] (.getAbsolutePath file))))))
+
+
+
+
 
 (defn -main
   "I don't do a whole lot."
   [& args]
   (do
-    (-> f pack! show!)
-    (show)))
+    (native!)
+    (-> f pack! show!)))
+    ;(show)))
 
+
+(-main)
 ;(listen b1 :mouse-entered #(config! % :foreground :black)
 ;          :mouse-exited  #(config! % :foreground :black))
 ;(*1)
