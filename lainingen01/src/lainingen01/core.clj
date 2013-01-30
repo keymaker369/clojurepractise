@@ -13,7 +13,7 @@
       (into {} (for [[k v] props] [(keyword k) (read-string v)])))))
 
 ;refovi
-(def recnik (load-props "//c://recnik.properties"))
+(def recnik {});(load-props "//c://recnik.properties"))
 (def r-not-used (ref recnik))
 (def r-odabran (ref {}))
 (def r-used (ref {}))
@@ -88,6 +88,15 @@
         )))
     ))
 
+(defn update-form [loaded-props] 
+  (do
+    (println loaded-props)
+    (def recnik loaded-props))
+    (dosync (ref-set r-not-used recnik))
+    (dosync (ref-set r-odabran {}))
+    (dosync (ref-set r-used {}))
+    (show))
+
 (defn uradi [answer]
   (println (.toString answer))
   (let [result-key (first (keys @r-odabran))]
@@ -109,7 +118,7 @@
 (listen b3 :action (fn [e] (uradi (.getText (.getSource e)))))
 (listen b4 :action (fn [e] (uradi (.getText (.getSource e)))))
 (listen b5 :action (fn [e] (uradi (.getText (.getSource e)))))
-(listen open-menu-item :action (fn [e] (println (choose-file :success-fn (fn [fc file] (.getAbsolutePath file))))))
+(listen open-menu-item :action (fn [e] (update-form (load-props (choose-file :success-fn (fn [fc file] (.getAbsolutePath file)))))))
 
 
 
@@ -120,11 +129,11 @@
   [& args]
   (do
     (native!)
-    (-> f pack! show!)))
-    ;(show)))
+    (-> f pack! show!);))
+    (show)))
 
 
-(-main)
+;(-main)
 ;(listen b1 :mouse-entered #(config! % :foreground :black)
 ;          :mouse-exited  #(config! % :foreground :black))
 ;(*1)
