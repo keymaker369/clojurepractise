@@ -251,7 +251,6 @@
 ; click around on the listbox and watch the selection print out.
  
 ; and unregister as usual
-(*1)
 ;=> [...]
  
  
@@ -441,9 +440,7 @@ text"))
 ;=> #<JRadioButton ...>
  
 ; Combine this with (id-of) and we have our original keywords back:
-(-> group selection id-of)
 ;=> :source
-(-> group selection id-of)
 ;=> :doc
  
 ; and, of course, you can register a listener for group selection changes
