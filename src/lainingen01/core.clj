@@ -19,13 +19,20 @@
 (def r-used (ref {}))
 
 ;gui
-(def f (frame :title "Language helpersss"  :size [400 :by 400] 
+(def f (frame :title "Language helpersss"  :size [800 :by 600] 
               :content (canvas :id :canvas :background "#BBBBBB")))
 (def open-menu-item (menu-item :text "Open"))
 (def file-menu (menu :text "File" :items (list open-menu-item)))
 (def menu-bar (menubar :items (list file-menu)))
-(def word (text :multi-line? false :font "MONOSPACED-PLAIN-14" :text "guessing text"))
-(def result (text :multi-line? true :font "MONOSPACED-PLAIN-14" :text "result"))
+(def word (text :multi-line? false 
+                :font "MONOSPACED-PLAIN-14" 
+                :text "guessing text"))
+(def result (text :multi-line? true :font 
+                  "MONOSPACED-PLAIN-14" 
+                  :text "result"))
+(def odgovor (text :multi-line? true :font 
+                  "MONOSPACED-PLAIN-14" 
+                  :text "odgovor"))
 (def b1 (button :text "Click Me1"))
 (def b2 (button :text "Click Me2"))
 (def b3 (button :text "Click Me3"))
@@ -40,7 +47,7 @@
            :content (border-panel
            :north word
            :center (vertical-panel :items (list b1 b2 b3 b4 b5))
-           :south result
+           :south (vertical-panel :items (list result odgovor))
            :vgap 5 :hgap 5 :border 5))
 
 ;funkcije
@@ -84,9 +91,7 @@
       nil
       (do
         (config! (first buttons) :text (name (recnik (first keys))))
-        (recur (remove #{(first keys)} keys) (remove #{(first buttons)} buttons))
-        )))
-    ))
+        (recur (remove #{(first keys)} keys) (remove #{(first buttons)} buttons)))))))
 
 (defn update-form [loaded-props] 
   (do
@@ -103,12 +108,12 @@
     (println (.toString (recnik result-key)))
     (if (.equals (.toString answer) (.toString (recnik result-key)))
       (do
-        (println "tacno")
-        (config! result :text "tacno")
+        (config! result :text "tacno" :background "green")
+        (config! odgovor :text (str result-key "=" (recnik result-key)))
         (show))
       (do
-        (println "netacno")
-        (config! result :text "netacno")
+        (config! result :text "netacno" :background "red")
+        (config! odgovor :text (str result-key "=" (recnik result-key)))
         (remove-from-map-ref r-odabran result-key)
         (add-to-map-ref r-used result-key (recnik result-key))
         (show))))) 
