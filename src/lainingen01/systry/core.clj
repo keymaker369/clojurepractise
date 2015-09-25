@@ -29,3 +29,4 @@
 (systray/remove-tray-icon! try-icon)
 
 (#(println %1 systray-menu) "ddd")
+
