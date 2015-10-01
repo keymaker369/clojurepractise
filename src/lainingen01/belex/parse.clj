@@ -28,8 +28,19 @@
            (parse-file)))
          #" "))))
 
+(results)
 
-(/ (results) 2)
+(map first 
+     (map :content (let [file-path "d:/bb1.htm"
+                         url-data (html/html-resource (java.io.StringReader. (slurp file-path)))
+                         selector [:div#content :table :tbody :tr :td :p :a]]
+                     (html/select url-data selector))))
+
+(count (map first 
+     (map :content (let [file-path "d:/bb1.htm"
+                         url-data (html/html-resource (java.io.StringReader. (slurp file-path)))
+                         selector [:div#content :table :tbody :tr :td :p :a]]
+                     (html/select url-data selector)))))
 
 
 (println (apply str 
