@@ -8,5 +8,6 @@
                  [org.clojure/math.numeric-tower "0.0.4"]
                  [seesaw "1.4.5"]
                  [clj-systemtray "0.2.1"]
-                 [overtone/at-at "1.2.0"]]
+                 [overtone/at-at "1.2.0"]
+                 [enlive "1.1.6"]]
   :main lainingen01.core)
