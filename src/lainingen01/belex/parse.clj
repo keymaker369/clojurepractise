@@ -2,6 +2,8 @@
   (:require [net.cgrand.enlive-html :as html])
   (:require [clojure.string :as str]))
 
+(def symbols (ref (list)))
+
 (defn fetch-page [url]
   (html/html-resource (java.net.URL. url)))
 
@@ -11,42 +13,43 @@
         selector [:div :p]]
     (first (html/select url-data selector))))
 
-(:content (parse-test))
-
-(defn parse-file []
-  (let [file-path "d:/bb1.htm"
-        url-data (html/html-resource (java.io.StringReader. (slurp file-path)))
-        selector [:div#content :div]]
+(defn parse-file [file-path selector]
+  (let [url-data (html/html-resource 
+                   (java.io.StringReader. (slurp file-path)))]
     (first (html/select url-data selector))))
 
-(defn results []
+(defn search-page-number-of-results [path selector]
   (read-string 
     (second 
      (str/split
        (last
          (:content 
-           (parse-file)))
+           (parse-file path selector)))
          #" "))))
 
-(results)
+;(search-page-number-of-results 
+;  "/home/user/Documents/belex/a.html"  
+;  [:div#content :div])
 
-(map first 
-     (map :content (let [file-path "d:/bb1.htm"
-                         url-data (html/html-resource (java.io.StringReader. (slurp file-path)))
-                         selector [:div#content :table :tbody :tr :td :p :a]]
-                     (html/select url-data selector))))
+(defn get-symbols 
+  [url selector]
+  (map first 
+       (map :content (let [url-data (fetch-page url)]
+                       (html/select url-data selector)))))
 
-(count (map first 
-     (map :content (let [file-path "d:/bb1.htm"
-                         url-data (html/html-resource (java.io.StringReader. (slurp file-path)))
-                         selector [:div#content :table :tbody :tr :td :p :a]]
-                     (html/select url-data selector)))))
+(defn add-symbols 
+  [path selector]
+  (println path selector)
+  (dosync
+    (ref-set
+      symbols (concat @symbols (get-symbols path selector)))))
 
+(count @symbols)
 
-(println (apply str 
-  (html/emit* [(parse-test)])))
+(count 
+  (apply sorted-set @symbols))
 
-(def page (fetch-page "http://example.com"))
+(spit 
+  "/home/user/Documents/belex/symbols.txt"
+  (str/join "," (apply sorted-set @symbols)))
 
-(nth page 0)
-(nth (:content (nth page 1)) 0)

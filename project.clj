@@ -10,4 +10,5 @@
                  [clj-systemtray "0.2.1"]
                  [overtone/at-at "1.2.0"]
                  [enlive "1.1.6"]]
+  :plugins [[lein-eclipse "1.0.0"]]
   :main lainingen01.core)
