@@ -14,7 +14,7 @@
 
 (loop [x 0]
   (if (= x (count (all-characters)))
-    (println "Kraj" (java.lang.Thread/currentThread))
+    (str "Kraj " (java.lang.Thread/currentThread))
     (do
       (println 
         (nth (all-characters) x))
