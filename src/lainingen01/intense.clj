@@ -19,3 +19,34 @@
       (println 
         (nth (all-characters) x))
       (recur (inc x)))))
+
+
+(def foo (atom {:blah "this"}))
+@foo
+(swap! foo (fn [old] 
+             (println old)
+             (inc old)))
+(swap! foo inc)
+
+(pmap
+  (fn [_] (swap! foo inc))
+  (range 10000))
+
+(def bar (atom 0))
+(def call-counter (atom 0))
+
+(defn slow-inc-with-call-count [x]
+  (swap! call-counter inc)
+  (java.lang.Thread/sleep 100)
+  (println x)
+  (inc x))
+
+(pmap
+  (fn [_] 
+    (swap! bar slow-inc-with-call-count))
+  (range 100))
+
+@call-counter
+
+
+9
